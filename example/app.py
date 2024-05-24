@@ -15,8 +15,8 @@ def unused_func0():
     pass
 
 # Limitation: unused recursive functions are not detected
-def unuesd_recursive():
-    unuesd_recursive()
+def unused_recursive():
+    unused_recursive()
 
 if __name__ == '__main__':
     main()

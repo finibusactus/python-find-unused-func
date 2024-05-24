@@ -25,17 +25,13 @@ def find_symbols(py_file):
                 used_symbols[node.id] += 1
     return defined_funcs, used_symbols
 
-
-def main():
+def get_all_unused_methods(files):
     # find method names and where they are defined_in_files
     methods = {}
     # load all used symbols in the whole source tree into memory
-    if len(sys.argv) < 2:
-        print('please specify python files to scan')
-        sys.exit(1)
-
     sources = []
-    for py_file in sys.argv[1:]:
+
+    for py_file in files:
         defined_funcs, used_symbols = find_symbols(py_file)
         for name in defined_funcs:
             if name in methods:
@@ -59,6 +55,16 @@ def main():
         if not method.used_in_files:
             for py_file in method.defined_in_files:
                 unused_methods[py_file].append(name)
+
+    return unused_methods
+
+def main():
+    if len(sys.argv) < 2 or sys.argv[1] in ["--help", "-h"]:
+        print(f"usage: {sys.argv[0]} files [files ... ]\n")
+        print("Scan each file for unused functions")
+        sys.exit(1)
+
+    unused_methods = get_all_unused_methods(sys.argv[1:])
 
     print('-' * 80)
 
